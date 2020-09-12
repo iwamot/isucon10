@@ -9,10 +9,10 @@ class App < Sinatra::Base
   CHAIR_SEARCH_CONDITION = JSON.parse(File.read('../fixture/chair_condition.json'), symbolize_names: true)
   ESTATE_SEARCH_CONDITION = JSON.parse(File.read('../fixture/estate_condition.json'), symbolize_names: true)
 
-  configure :development do
-    require 'sinatra/reloader'
-    register Sinatra::Reloader
-  end
+#  configure :development do
+#    require 'sinatra/reloader'
+#    register Sinatra::Reloader
+#  end
 
 #  configure do
 #    enable :logging
@@ -109,7 +109,7 @@ class App < Sinatra::Base
   end
 
   get '/api/chair/low_priced' do
-    sql = "SELECT * FROM chair WHERE stock > 0 ORDER BY price ASC, id ASC LIMIT #{LIMIT}" # XXX:
+    sql = "SELECT * FROM chair WHERE stock != 0 ORDER BY price ASC, id ASC LIMIT #{LIMIT}" # XXX:
     chairs = db.query(sql).to_a
     { chairs: chairs }.to_json
   end
@@ -212,7 +212,7 @@ class App < Sinatra::Base
       halt 400
     end
 
-    search_queries.push('stock > 0')
+    search_queries.push('stock != 0')
 
     page =
       begin
@@ -294,7 +294,7 @@ class App < Sinatra::Base
         halt 400
       end
 
-    db.xquery('UPDATE chair SET stock = stock - 1 WHERE id = ? AND stock > 0', id)
+    db.xquery('UPDATE chair SET stock = stock - 1 WHERE id = ? AND stock != 0', id)
     unless db.affected_rows == 1
       halt 404
     end
