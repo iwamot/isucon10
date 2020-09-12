@@ -14,9 +14,9 @@ class App < Sinatra::Base
     register Sinatra::Reloader
   end
 
-  configure do
-    enable :logging
-  end
+#  configure do
+#    enable :logging
+#  end
 
   set :add_charset, ['application/json']
 
