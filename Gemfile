@@ -7,5 +7,3 @@ gem "sinatra-contrib"
 gem "mysql2"
 gem "mysql2-cs-bind"
 gem "unicorn"
-
-gem 'newrelic_rpm'
